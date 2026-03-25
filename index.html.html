@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shriram Vijaykumar — Data Analyst Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Satoshi:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0a;
+    --paper: #f5f2ed;
+    --accent: #2d5bff;
+    --accent-glow: #4d76ff;
+    --muted: #8a8578;
+    --divider: #d4cfc6;
+    --card: #ffffff;
+    --tag-bg: #eae6df;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Satoshi', sans-serif;
+    background: var(--paper); color: var(--ink);
+    line-height: 1.6; overflow-x: hidden;
+  }
+  ::selection { background: var(--accent); color: #fff; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(245,242,237,0.85); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--divider); transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.06); }
+  .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; letter-spacing: -0.02em; }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    text-decoration: none; color: var(--muted); font-size: 0.85rem;
+    font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+    padding: 8rem 3rem 4rem; max-width: 1200px; margin: 0 auto;
+  }
+  .hero-overline {
+    font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.15em; color: var(--accent); margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.05; letter-spacing: -0.03em; max-width: 800px;
+    opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero h1 em {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--accent), var(--accent-glow));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-sub {
+    font-size: 1.15rem; color: var(--muted); max-width: 560px;
+    margin-top: 1.5rem; line-height: 1.7;
+    opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .hero-cta {
+    display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.85rem 1.8rem; border-radius: 6px; font-size: 0.9rem;
+    font-weight: 600; text-decoration: none; transition: all 0.3s; cursor: pointer; border: none;
+  }
+  .btn-primary { background: var(--ink); color: var(--paper); }
+  .btn-primary:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(45,91,255,0.25); }
+  .btn-outline { background: transparent; color: var(--ink); border: 1.5px solid var(--divider); }
+  .btn-outline:hover { border-color: var(--ink); }
+
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 4rem; padding-top: 2rem;
+    border-top: 1px solid var(--divider);
+    opacity: 0; animation: fadeUp 0.8s 1s forwards;
+  }
+  .stat-num { font-family: 'DM Serif Display', serif; font-size: 2.2rem; color: var(--accent); display: block; }
+  .stat-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.2rem; }
+
+  section { padding: 6rem 3rem; max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -0.02em; margin-bottom: 1rem;
+  }
+  .section-desc { color: var(--muted); font-size: 1.05rem; max-width: 600px; margin-bottom: 3rem; line-height: 1.7; }
+
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem; }
+  .project-card {
+    background: var(--card); border-radius: 14px; padding: 2.2rem;
+    border: 1px solid var(--divider); transition: all 0.35s; position: relative; overflow: hidden;
+  }
+  .project-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.08); border-color: var(--accent); }
+  .project-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-glow)); opacity: 0; transition: opacity 0.3s;
+  }
+  .project-card:hover::before { opacity: 1; }
+  .project-icon {
+    width: 48px; height: 48px; border-radius: 12px; background: var(--tag-bg);
+    display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 1.2rem;
+  }
+  .project-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; margin-bottom: 0.6rem; }
+  .project-card p { color: var(--muted); font-size: 0.92rem; line-height: 1.65; margin-bottom: 1.2rem; }
+  .project-impact {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; font-weight: 500;
+    color: var(--accent); background: rgba(45,91,255,0.06);
+    padding: 0.4rem 0.75rem; border-radius: 5px; display: inline-block; margin-bottom: 1rem;
+  }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tag {
+    font-size: 0.72rem; font-weight: 600; padding: 0.3rem 0.65rem;
+    border-radius: 4px; background: var(--tag-bg); color: var(--muted); letter-spacing: 0.03em;
+  }
+
+  /* DASHBOARD */
+  .dashboard-section { padding: 6rem 3rem; max-width: 1200px; margin: 0 auto; }
+  .dashboard-frame {
+    background: #1e1e2e; border-radius: 16px; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15); border: 1px solid #2a2a3e;
+  }
+  .dashboard-titlebar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.75rem 1.2rem; background: #16162a; border-bottom: 1px solid #2a2a3e;
+  }
+  .titlebar-dots { display: flex; gap: 6px; }
+  .titlebar-dots span { width: 10px; height: 10px; border-radius: 50%; }
+  .titlebar-dots span:nth-child(1) { background: #ff5f57; }
+  .titlebar-dots span:nth-child(2) { background: #febc2e; }
+  .titlebar-dots span:nth-child(3) { background: #28c840; }
+  .titlebar-label { font-size: 0.72rem; color: #888; font-family: 'JetBrains Mono', monospace; }
+  .dash-tabs {
+    display: flex; background: #16162a; border-bottom: 1px solid #2a2a3e; overflow-x: auto;
+  }
+  .dash-tab {
+    padding: 0.65rem 1.4rem; font-size: 0.78rem; font-weight: 600;
+    color: #777; cursor: pointer; border: none; border-bottom: 2px solid transparent;
+    transition: all 0.25s; white-space: nowrap; letter-spacing: 0.02em;
+    font-family: 'Satoshi', sans-serif; background: none;
+  }
+  .dash-tab:hover { color: #bbb; }
+  .dash-tab.active { color: #7c9dff; border-bottom-color: #7c9dff; }
+  .dash-page { display: none; padding: 1.5rem; }
+  .dash-page.active { display: block; }
+  .dash-filters { display: flex; gap: 0.6rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
+  .dash-filter {
+    background: #2a2a3e; border: 1px solid #3a3a52; border-radius: 6px;
+    padding: 0.4rem 0.8rem; font-size: 0.72rem; color: #aaa;
+    font-family: 'JetBrains Mono', monospace; display: flex; align-items: center; gap: 0.3rem;
+  }
+  .dash-filter select {
+    background: transparent; border: none; color: #ddd; font-size: 0.72rem;
+    font-family: 'JetBrains Mono', monospace; cursor: pointer; outline: none;
+  }
+  .dash-filter select option { background: #2a2a3e; }
+  .dash-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.8rem; margin-bottom: 1.5rem; }
+  .dash-kpi { background: #252540; border-radius: 10px; padding: 1rem; text-align: center; border: 1px solid #2e2e48; }
+  .dash-kpi-val { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: #fff; }
+  .dash-kpi-label { font-size: 0.68rem; color: #888; margin-top: 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .dash-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .dash-chart-box {
+    background: #252540; border-radius: 10px; padding: 1rem; border: 1px solid #2e2e48; min-height: 200px;
+  }
+  .dash-chart-title { font-size: 0.75rem; color: #aaa; margin-bottom: 0.8rem; font-weight: 600; }
+  .chart-svg { width: 100%; height: 180px; }
+  .bar { transition: opacity 0.2s; }
+  .bar:hover { opacity: 0.8; }
+  .chart-line { fill: none; stroke-width: 2; }
+  .chart-dot { transition: r 0.2s; }
+  .chart-dot:hover { r: 5; }
+  .chart-axis { stroke: #3a3a52; stroke-width: 1; }
+  .chart-label { fill: #666; font-size: 9px; font-family: 'JetBrains Mono', monospace; }
+  .chart-grid { stroke: #2a2a3e; stroke-width: 0.5; stroke-dasharray: 3,3; }
+  .funnel-stage { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.6rem; }
+  .funnel-bar-bg { flex: 1; height: 28px; background: #1e1e2e; border-radius: 4px; overflow: hidden; position: relative; }
+  .funnel-bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+  .funnel-label { font-size: 0.72rem; color: #aaa; width: 55px; text-align: right; font-family: 'JetBrains Mono', monospace; }
+  .funnel-val { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 0.7rem; color: #fff; font-family: 'JetBrains Mono', monospace; }
+  .sentiment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-top: 0.8rem; }
+  .sentiment-badge { text-align: center; padding: 0.8rem; border-radius: 8px; }
+  .sentiment-badge .val { font-size: 1.3rem; font-weight: 700; font-family: 'DM Serif Display', serif; }
+  .sentiment-badge .lbl { font-size: 0.65rem; margin-top: 0.15rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .sentiment-pos { background: rgba(40,200,64,0.1); color: #28c840; }
+  .sentiment-neu { background: rgba(254,188,46,0.1); color: #febc2e; }
+  .sentiment-neg { background: rgba(255,95,87,0.1); color: #ff5f57; }
+  .review-table { width: 100%; font-size: 0.72rem; color: #bbb; border-collapse: collapse; }
+  .review-table th {
+    text-align: left; padding: 0.5rem; color: #888; font-weight: 600;
+    border-bottom: 1px solid #3a3a52; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .review-table td { padding: 0.5rem; border-bottom: 1px solid #2a2a3e; }
+  .dash-full-width { grid-column: 1 / -1; }
+
+  .timeline { position: relative; }
+  .timeline::before { content: ''; position: absolute; left: 24px; top: 0; bottom: 0; width: 2px; background: var(--divider); }
+  .timeline-item { position: relative; padding-left: 64px; margin-bottom: 3rem; }
+  .timeline-dot { position: absolute; left: 16px; top: 6px; width: 18px; height: 18px; border-radius: 50%; border: 3px solid var(--accent); background: var(--paper); }
+  .timeline-date { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--accent); margin-bottom: 0.3rem; }
+  .timeline-role { font-family: 'DM Serif Display', serif; font-size: 1.35rem; margin-bottom: 0.15rem; }
+  .timeline-company { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.8rem; }
+  .timeline-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .timeline-bullets li { font-size: 0.9rem; color: #444; line-height: 1.6; padding-left: 1rem; position: relative; }
+  .timeline-bullets li::before { content: ''; position: absolute; left: 0; top: 0.6rem; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+
+  .skills-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+  .skill-group { background: var(--card); border-radius: 12px; padding: 1.8rem; border: 1px solid var(--divider); }
+  .skill-group h3 { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+  .skill-pills { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .pill { font-size: 0.82rem; padding: 0.4rem 0.85rem; border-radius: 100px; background: var(--tag-bg); color: var(--ink); font-weight: 500; transition: all 0.25s; }
+  .pill:hover { background: var(--accent); color: #fff; transform: scale(1.05); }
+
+  .edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+  .edu-card { background: var(--card); border-radius: 12px; padding: 2rem; border: 1px solid var(--divider); }
+  .edu-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.2rem; margin-bottom: 0.25rem; }
+  .edu-card .degree { color: var(--accent); font-weight: 600; font-size: 0.9rem; }
+  .edu-card .year { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.75rem; }
+  .edu-card .coursework { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+  .contact-section { text-align: center; padding: 6rem 3rem 8rem; max-width: 700px; margin: 0 auto; }
+  .contact-section .section-desc { margin: 0 auto 2.5rem; }
+  .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+  .contact-chip {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1.5rem; border-radius: 100px;
+    background: var(--card); border: 1.5px solid var(--divider);
+    font-size: 0.88rem; font-weight: 500; color: var(--ink); text-decoration: none; transition: all 0.3s;
+  }
+  .contact-chip:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(45,91,255,0.12); }
+  .contact-chip svg { width: 18px; height: 18px; }
+
+  footer { text-align: center; padding: 2rem; font-size: 0.78rem; color: var(--muted); border-top: 1px solid var(--divider); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s, transform 0.7s; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1rem; }
+    .nav-links a { font-size: 0.72rem; }
+    .hero { padding: 7rem 1.5rem 3rem; }
+    section, .dashboard-section { padding: 4rem 1.5rem; }
+    .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .dash-charts { grid-template-columns: 1fr; }
+    .dash-kpis { grid-template-columns: repeat(2, 1fr); }
+    .contact-section { padding: 4rem 1.5rem 5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-logo">Shriram<span>.</span></div>
+  <div class="nav-links">
+    <a href="#projects">Projects</a>
+    <a href="#dashboard">Live Dashboard</a>
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-overline">Data Analyst &middot; Based in Dallas, TX &middot; Open to Relocation Across the U.S.</div>
+  <h1>I turn complex data into <em>clear decisions.</em></h1>
+  <p class="hero-sub">Data analyst with 5+ years building dashboards, causal measurement frameworks, and self-service analytics across healthcare, pharma, and consumer domains. I make data useful for the people who need it.</p>
+  <div class="hero-cta">
+    <a href="#dashboard" class="btn btn-primary">See Live Dashboard &#8595;</a>
+    <a href="#contact" class="btn btn-outline">Get In Touch</a>
+  </div>
+  <div class="hero-stats">
+    <div><span class="stat-num">5+</span><span class="stat-label">Years Experience</span></div>
+    <div><span class="stat-num">15+</span><span class="stat-label">Analytics Engagements</span></div>
+    <div><span class="stat-num">$600K+</span><span class="stat-label">Business Impact Driven</span></div>
+    <div><span class="stat-num">100K+</span><span class="stat-label">Entities Modeled</span></div>
+  </div>
+</div>
+
+<section id="projects">
+  <div class="section-label reveal">Featured Work</div>
+  <h2 class="section-title reveal">Projects & Impact</h2>
+  <p class="section-desc reveal">End-to-end analytics spanning causal measurement, dashboard design, pipeline automation, and strategic insight delivery.</p>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-icon">&#128202;</div>
+      <h3>Causal Impact &amp; ROI Measurement</h3>
+      <div class="project-impact">&#8593; 18% incremental lift isolated</div>
+      <p>Designed propensity score matching framework to isolate true ROI drivers from HCP media exposure, enabling a $400K investment recommendation backed by causal evidence.</p>
+      <div class="project-tags"><span class="tag">Python</span><span class="tag">R (MatchIt)</span><span class="tag">PSM</span><span class="tag">Snowflake SQL</span><span class="tag">Causal Inference</span></div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-icon">&#9889;</div>
+      <h3>Self-Service Analytics Dashboard</h3>
+      <div class="project-impact">&#8595; 3.5 analyst hours saved weekly</div>
+      <p>Architected automated pipelines (Python + Streamlit + SQL) pulling from Snowflake, consolidating fragmented workflows into a real-time self-service BI tool.</p>
+      <div class="project-tags"><span class="tag">Streamlit</span><span class="tag">Python</span><span class="tag">Snowflake</span><span class="tag">Pipeline Automation</span></div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-icon">&#127919;</div>
+      <h3>Performance Benchmarking Engine</h3>
+      <div class="project-impact">100K+ entities scored &amp; segmented</div>
+      <p>Built z-score based benchmarking model to rank entities against peer groups, producing actionable targeting tiers for sales teams.</p>
+      <div class="project-tags"><span class="tag">Python</span><span class="tag">Z-Score Analysis</span><span class="tag">Segmentation</span><span class="tag">SQL</span></div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-icon">&#128200;</div>
+      <h3>Marketing Analytics Dashboard</h3>
+      <div class="project-impact">Power BI &middot; 4 interactive pages</div>
+      <p>Designed multi-page Power BI dashboard tracking conversion funnels, social engagement, and customer sentiment with automated pipelines. <a href="#dashboard" style="color:var(--accent);font-weight:600;">See it live below &#8595;</a></p>
+      <div class="project-tags"><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Data Modeling</span><span class="tag">Sentiment Analysis</span></div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-icon">&#128269;</div>
+      <h3>Test-Control Design &amp; A/B Testing</h3>
+      <div class="project-impact">&#8595; 30% baseline imbalance reduced</div>
+      <p>Designed matched test-control methodology using stratified sampling, predictive modeling, and hypothesis testing to strengthen incrementality measurement.</p>
+      <div class="project-tags"><span class="tag">A/B Testing</span><span class="tag">Hypothesis Testing</span><span class="tag">Stratified Sampling</span><span class="tag">Python</span></div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-icon">&#127757;</div>
+      <h3>Customer Segmentation &amp; Pricing</h3>
+      <div class="project-impact">&#8593; 6% conversion improvement</div>
+      <p>Analyzed 5M+ transactional records across 10+ markets using regression and clustering to identify pricing sensitivities for Fortune 500 clients.</p>
+      <div class="project-tags"><span class="tag">SQL</span><span class="tag">Python</span><span class="tag">Clustering</span><span class="tag">Regression</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE DASHBOARD -->
+<div class="dashboard-section" id="dashboard">
+  <div class="section-label reveal">Live Project</div>
+  <h2 class="section-title reveal">Marketing Analytics Dashboard</h2>
+  <p class="section-desc reveal">Interactive recreation of a Power BI dashboard I built tracking product marketing performance across conversion funnels, social engagement, and customer sentiment. Four pages, filterable by product, year, and month.</p>
+
+  <div class="dashboard-frame reveal">
+    <div class="dashboard-titlebar">
+      <div class="titlebar-dots"><span></span><span></span><span></span></div>
+      <div class="titlebar-label">Marketing_Analytics_Dashboard.pbix</div>
+    </div>
+    <div class="dash-tabs">
+      <button class="dash-tab active" data-page="overview">Overview</button>
+      <button class="dash-tab" data-page="conversion">Conversion Details</button>
+      <button class="dash-tab" data-page="social">Social Media Details</button>
+      <button class="dash-tab" data-page="reviews">Customer Review Details</button>
+    </div>
+
+    <div class="dash-page active" id="page-overview">
+      <div class="dash-filters">
+        <div class="dash-filter">Product: <select id="f-product" onchange="updateOverview()"><option value="all">All Products</option><option value="0">Kayak</option><option value="1">Surfboard</option><option value="2">Ski Boots</option><option value="3">Baseball Glove</option></select></div>
+        <div class="dash-filter">Year: <select id="f-year"><option>2024</option><option>2023</option></select></div>
+        <div class="dash-filter">Month: <select id="f-month"><option>All</option><option>Jan</option><option>Feb</option><option>Mar</option><option>Apr</option><option>May</option><option>Jun</option><option>Jul</option><option>Aug</option><option>Sep</option><option>Oct</option><option>Nov</option><option>Dec</option></select></div>
+      </div>
+      <div class="dash-kpis">
+        <div class="dash-kpi"><div class="dash-kpi-val" id="kpi-cvr">4.8%</div><div class="dash-kpi-label">Conversion Rate</div></div>
+        <div class="dash-kpi"><div class="dash-kpi-val" id="kpi-views">842K</div><div class="dash-kpi-label">Views</div></div>
+        <div class="dash-kpi"><div class="dash-kpi-val" id="kpi-clicks">68K</div><div class="dash-kpi-label">Clicks</div></div>
+        <div class="dash-kpi"><div class="dash-kpi-val" id="kpi-likes">31K</div><div class="dash-kpi-label">Likes</div></div>
+        <div class="dash-kpi"><div class="dash-kpi-val" id="kpi-rating">3.7</div><div class="dash-kpi-label">Avg Rating</div></div>
+      </div>
+      <div class="dash-charts">
+        <div class="dash-chart-box"><div class="dash-chart-title">Conversion Rate by Month</div><svg class="chart-svg" id="chart-cvr-line" viewBox="0 0 360 160"></svg></div>
+        <div class="dash-chart-box"><div class="dash-chart-title">Conversion Rate by Product</div><svg class="chart-svg" id="chart-cvr-bar" viewBox="0 0 360 160"></svg></div>
+        <div class="dash-chart-box"><div class="dash-chart-title">Views / Clicks / Likes Trend</div><svg class="chart-svg" id="chart-engagement-line" viewBox="0 0 360 160"></svg></div>
+        <div class="dash-chart-box"><div class="dash-chart-title">Marketing Funnel</div><div id="funnel-overview" style="padding:0.5rem 0;"></div></div>
+      </div>
+    </div>
+
+    <div class="dash-page" id="page-conversion">
+      <div class="dash-filters">
+        <div class="dash-filter">Product: <select><option>All Products</option><option>Kayak</option><option>Surfboard</option><option>Ski Boots</option><option>Baseball Glove</option></select></div>
+        <div class="dash-filter">Year: <select><option>2024</option><option>2023</option></select></div>
+      </div>
+      <div class="dash-kpis" style="grid-template-columns:1fr;"><div class="dash-kpi"><div class="dash-kpi-val">4.8%</div><div class="dash-kpi-label">Overall Conversion Rate</div></div></div>
+      <div class="dash-charts">
+        <div class="dash-chart-box"><div class="dash-chart-title">Conversion Rate Trend</div><svg class="chart-svg" id="chart-cvr-detail" viewBox="0 0 360 160"></svg></div>
+        <div class="dash-chart-box"><div class="dash-chart-title">Conversion by Product</div><svg class="chart-svg" id="chart-cvr-product" viewBox="0 0 360 160"></svg></div>
+        <div class="dash-chart-box dash-full-width"><div class="dash-chart-title">Customer Journey Funnel</div><div id="funnel-detail"></div></div>
+      </div>
+    </div>
+
+    <div class="dash-page" id="page-social">
+      <div class="dash-filters">
+        <div class="dash-filter">Product: <select><option>All Products</option><option>Kayak</option><option>Surfboard</option><option>Ski Boots</option><option>Baseball Glove</option></select></div>
+        <div class="dash-filter">Year: <select><option>2024</option><option>2023</option></select></div>
+      </div>
+      <div class="dash-kpis">
+        <div class="dash-kpi"><div class="dash-kpi-val">842K</div><div class="dash-kpi-label">Views</div></div>
+        <div class="dash-kpi"><div class="dash-kpi-val">68K</div><div class="dash-kpi-label">Clicks</div></div>
+        <div class="dash-kpi"><div class="dash-kpi-val">31K</div><div class="dash-kpi-label">Likes</div></div>
+      </div>
+      <div class="dash-charts">
+        <div class="dash-chart-box"><div class="dash-chart-title">Engagement Trends (Views, Clicks, Likes)</div><svg class="chart-svg" id="chart-social-line" viewBox="0 0 360 160"></svg></div>
+        <div class="dash-chart-box"><div class="dash-chart-title">Views by Content Type</div><svg class="chart-svg" id="chart-content-type" viewBox="0 0 360 160"></svg></div>
+      </div>
+    </div>
+
+    <div class="dash-page" id="page-reviews">
+      <div class="dash-filters">
+        <div class="dash-filter">Product: <select><option>All Products</option><option>Kayak</option><option>Surfboard</option><option>Ski Boots</option><option>Baseball Glove</option></select></div>
+        <div class="dash-filter">Sentiment: <select><option>All</option><option>Positive</option><option>Neutral</option><option>Negative</option></select></div>
+      </div>
+      <div class="dash-kpis" style="grid-template-columns:1fr;"><div class="dash-kpi"><div class="dash-kpi-val">3.7</div><div class="dash-kpi-label">Average Rating</div></div></div>
+      <div class="dash-charts">
+        <div class="dash-chart-box">
+          <div class="dash-chart-title">Rating Distribution</div>
+          <svg class="chart-svg" id="chart-rating-dist" viewBox="0 0 360 160"></svg>
+        </div>
+        <div class="dash-chart-box">
+          <div class="dash-chart-title">Sentiment Breakdown</div>
+          <div class="sentiment-grid">
+            <div class="sentiment-badge sentiment-pos"><div class="val">47%</div><div class="lbl">Positive</div></div>
+            <div class="sentiment-badge sentiment-neu"><div class="val">28%</div><div class="lbl">Neutral</div></div>
+            <div class="sentiment-badge sentiment-neg"><div class="val">25%</div><div class="lbl">Negative</div></div>
+          </div>
+          <svg class="chart-svg" id="chart-sentiment-bar" viewBox="0 0 360 120" style="height:120px;margin-top:0.8rem;"></svg>
+        </div>
+        <div class="dash-chart-box dash-full-width">
+          <div class="dash-chart-title">Recent Customer Reviews</div>
+          <table class="review-table">
+            <thead><tr><th>Date</th><th>Customer</th><th>Review</th><th>Rating</th></tr></thead>
+            <tbody>
+              <tr><td>2024-11-15</td><td>C-4821</td><td>Great product, exceeded expectations. Fast shipping too.</td><td style="color:#28c840;">&#9733;&#9733;&#9733;&#9733;&#9733;</td></tr>
+              <tr><td>2024-11-12</td><td>C-3290</td><td>Decent quality but sizing was slightly off from the chart.</td><td style="color:#febc2e;">&#9733;&#9733;&#9733;</td></tr>
+              <tr><td>2024-11-08</td><td>C-7134</td><td>Not what I expected. Material feels cheap for the price.</td><td style="color:#ff5f57;">&#9733;&#9733;</td></tr>
+              <tr><td>2024-11-03</td><td>C-5567</td><td>Perfect for what I needed. Will definitely buy again.</td><td style="color:#28c840;">&#9733;&#9733;&#9733;&#9733;</td></tr>
+              <tr><td>2024-10-28</td><td>C-1983</td><td>Average experience. Nothing special but works fine.</td><td style="color:#febc2e;">&#9733;&#9733;&#9733;</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label reveal">Career</div>
+  <h2 class="section-title reveal">Experience</h2>
+  <p class="section-desc reveal">Progressive analytics roles across healthcare, pharma, and consumer insights.</p>
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">Oct 2024 - Dec 2025</div>
+      <div class="timeline-role">Data Scientist, Strategy &amp; Insights</div>
+      <div class="timeline-company">PatientPoint &middot; Cincinnati, OH</div>
+      <ul class="timeline-bullets">
+        <li>Delivered $400K investment recommendation through causal impact analysis and propensity score matching</li>
+        <li>Architected self-service Streamlit + Snowflake dashboards, saving 3.5 analyst hours/week</li>
+        <li>Engineered performance benchmarking model scoring 100K+ entities into targeting tiers</li>
+        <li>Identified $200K+ expansion opportunity through coverage gap analysis and geo-forecasting</li>
+      </ul>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">May 2023 - Aug 2023</div>
+      <div class="timeline-role">Data Science Intern</div>
+      <div class="timeline-company">Merck &middot; Philadelphia, PA</div>
+      <ul class="timeline-bullets">
+        <li>Built interactive Power BI dashboard with automated pipelines tracking volume trends and market share</li>
+        <li>Synthesized multi-source oncology data supporting 30%+ increase in market projections</li>
+        <li>Created centralized Knowledge Book, reducing new-hire ramp-up time by 40%</li>
+      </ul>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">Sep 2020 - Aug 2022</div>
+      <div class="timeline-role">Marketing Analyst</div>
+      <div class="timeline-company">Kantar &middot; Bengaluru, India</div>
+      <ul class="timeline-bullets">
+        <li>Managed 15+ end-to-end analytics engagements for Fortune 500 clients across 10+ markets</li>
+        <li>Analyzed 5M+ record transactional datasets using SQL and Python, driving 6% conversion lift</li>
+        <li>Built NPS-based brand health frameworks combining CLV modeling with attitudinal drivers</li>
+      </ul>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">Jan 2020 - Sep 2020</div>
+      <div class="timeline-role">Content Operations Analyst</div>
+      <div class="timeline-company">Embibe &middot; Bengaluru, India</div>
+      <ul class="timeline-bullets">
+        <li>Built quality scoring frameworks across 500K+ records using SQL and advanced Excel</li>
+        <li>Reduced manual data cleanup effort by 25% through automated validation pipelines</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label reveal">Toolkit</div>
+  <h2 class="section-title reveal">Technical Skills</h2>
+  <p class="section-desc reveal">The tools and methods I use to extract, analyze, and communicate data.</p>
+  <div class="skills-container">
+    <div class="skill-group reveal">
+      <h3>&#128187; Languages &amp; Libraries</h3>
+      <div class="skill-pills"><span class="pill">Python</span><span class="pill">Pandas</span><span class="pill">NumPy</span><span class="pill">Scikit-learn</span><span class="pill">SQL</span><span class="pill">R</span><span class="pill">VBA</span></div>
+    </div>
+    <div class="skill-group reveal">
+      <h3>&#128202; Visualization &amp; BI</h3>
+      <div class="skill-pills"><span class="pill">Power BI</span><span class="pill">Tableau</span><span class="pill">Streamlit</span><span class="pill">Looker</span><span class="pill">Plotly</span><span class="pill">Seaborn</span></div>
+    </div>
+    <div class="skill-group reveal">
+      <h3>&#128290; Statistical Methods</h3>
+      <div class="skill-pills"><span class="pill">A/B Testing</span><span class="pill">Causal Inference</span><span class="pill">PSM</span><span class="pill">Regression</span><span class="pill">Clustering</span><span class="pill">Time Series</span><span class="pill">Hypothesis Testing</span></div>
+    </div>
+    <div class="skill-group reveal">
+      <h3>&#9729;&#65039; Data Platforms</h3>
+      <div class="skill-pills"><span class="pill">Snowflake</span><span class="pill">Databricks</span><span class="pill">AWS (S3, Redshift)</span><span class="pill">Azure</span><span class="pill">Git</span><span class="pill">Advanced Excel</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-label reveal">Education</div>
+  <h2 class="section-title reveal">Academic Background</h2>
+  <div class="edu-grid" style="margin-top:2rem;">
+    <div class="edu-card reveal">
+      <h3>Northeastern University</h3>
+      <div class="degree">M.S. Data Analytics Engineering</div>
+      <div class="year">Boston, MA &middot; 2024</div>
+      <div class="coursework">Data Mining, Machine Learning, NLP, MLOps, Data Warehousing &amp; BI, Cloud Computing</div>
+    </div>
+    <div class="edu-card reveal">
+      <h3>BMS College of Engineering</h3>
+      <div class="degree">B.E. Industrial Engineering &amp; Management</div>
+      <div class="year">Bengaluru, India &middot; 2020</div>
+      <div class="coursework">Statistics, Operations Research, Business Analytics, Quality Engineering, Supply Chain</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="section-label reveal">Let's Connect</div>
+  <h2 class="section-title reveal">Interested in working together?</h2>
+  <p class="section-desc reveal">Currently open to data analyst and analytics roles. Based in Dallas, TX and open to relocation across the U.S.</p>
+  <div class="contact-links reveal">
+    <a href="mailto:shriram.vijaykumar@outlook.com" class="contact-chip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 4-10 8L2 4"/></svg>
+      shriram.vijaykumar@outlook.com
+    </a>
+    <a href="tel:+18578001644" class="contact-chip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      (857) 800-1644
+    </a>
+    <a href="https://linkedin.com/in/shriramvijaykumar" class="contact-chip" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      LinkedIn
+    </a>
+    <a href="https://github.com/shriramvijaykumar" class="contact-chip" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+      GitHub
+    </a>
+  </div>
+</section>
+
+<footer><p>&copy; 2026 Shriram Vijaykumar. Built with intention.</p></footer>
+
+<script>
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50);});
+const reveals=document.querySelectorAll('.reveal');
+const observer=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);observer.unobserve(e.target);}});},{threshold:0.15});
+reveals.forEach(el=>observer.observe(el));
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'});});});
+document.querySelectorAll('.dash-tab').forEach(tab=>{tab.addEventListener('click',()=>{document.querySelectorAll('.dash-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dash-page').forEach(p=>p.classList.remove('active'));tab.classList.add('active');document.getElementById('page-'+tab.dataset.page).classList.add('active');setTimeout(renderAllCharts,50);});});
+
+const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DATA={
+  cvrByMonth:[[4.2,4.6,5.0,4.7,5.5,5.8,5.4,5.6,5.2,5.9,5.3,5.7],[3.1,3.5,3.8,3.5,4.2,4.5,4.1,4.3,3.9,4.6,4.0,4.4],[5.0,5.4,5.8,5.5,6.3,6.6,6.2,6.4,6.0,6.7,6.1,6.5],[3.0,3.3,3.6,3.3,4.0,4.3,3.9,4.1,3.7,4.4,3.8,4.2]],
+  viewsByMonth:[[18,20,22,21,24,26,23,25,21,27,24,26],[15,16,18,17,20,21,19,20,17,22,20,21],[14,15,17,16,19,20,18,19,16,20,19,20],[15,17,18,17,19,21,19,21,19,21,21,19]],
+  clicksByMonth:[[1.4,1.5,1.7,1.6,1.9,2.1,1.9,2.0,1.7,2.2,2.0,2.1],[1.1,1.2,1.4,1.3,1.6,1.7,1.5,1.6,1.3,1.8,1.6,1.7],[1.1,1.2,1.3,1.2,1.5,1.6,1.4,1.5,1.2,1.6,1.5,1.5],[1.2,1.3,1.5,1.4,1.7,1.7,1.6,1.8,1.6,1.7,1.7,1.7]],
+  likesByMonth:[[0.6,0.7,0.8,0.7,0.9,1.0,0.9,1.0,0.8,1.0,0.9,1.0],[0.5,0.6,0.7,0.6,0.8,0.8,0.7,0.8,0.6,0.8,0.7,0.8],[0.5,0.5,0.6,0.6,0.7,0.8,0.7,0.7,0.6,0.8,0.7,0.7],[0.5,0.6,0.7,0.6,0.8,0.8,0.7,0.8,0.7,0.9,0.8,0.8]]
+};
+const products=['Kayak','Surfboard','Ski Boots','Glove'];
+const cvrByProduct=[5.4,4.1,5.8,3.9];
+const C={blue:'#7c9dff',green:'#28c840',amber:'#febc2e',red:'#ff5f57',purple:'#b07cff',cyan:'#4dd9e8'};
+
+function sumArrays(arrs){return arrs[0].map((_,i)=>arrs.reduce((s,a)=>s+a[i],0));}
+function avgArrays(arrs){return arrs[0].map((_,i)=>arrs.reduce((s,a)=>s+a[i],0)/arrs.length);}
+
+function getFiltered(){
+  const p=document.getElementById('f-product').value;
+  if(p==='all'){
+    return{cvr:avgArrays(DATA.cvrByMonth),views:sumArrays(DATA.viewsByMonth),clicks:sumArrays(DATA.clicksByMonth),likes:sumArrays(DATA.likesByMonth),totalViews:842,totalClicks:68,totalLikes:31,avgCvr:4.8,avgRating:3.7};
+  }
+  const i=parseInt(p);
+  const tv=DATA.viewsByMonth[i].reduce((a,b)=>a+b,0);
+  const tc=DATA.clicksByMonth[i].reduce((a,b)=>a+b,0);
+  const tl=DATA.likesByMonth[i].reduce((a,b)=>a+b,0);
+  return{cvr:DATA.cvrByMonth[i],views:DATA.viewsByMonth[i],clicks:DATA.clicksByMonth[i],likes:DATA.likesByMonth[i],totalViews:tv,totalClicks:tc,totalLikes:tl,avgCvr:cvrByProduct[i],avgRating:[3.9,3.5,3.8,3.6][i]};
+}
+
+function updateOverview(){
+  const d=getFiltered();
+  document.getElementById('kpi-cvr').textContent=d.avgCvr.toFixed(1)+'%';
+  document.getElementById('kpi-views').textContent=d.totalViews+'K';
+  document.getElementById('kpi-clicks').textContent=d.totalClicks+'K';
+  document.getElementById('kpi-likes').textContent=d.totalLikes+'K';
+  document.getElementById('kpi-rating').textContent=d.avgRating.toFixed(1);
+  renderAllCharts();
+}
+
+function drawLine(svgId,labels,datasets){
+  const svg=document.getElementById(svgId);if(!svg)return;
+  const W=360,H=160,p={t:15,r:15,b:25,l:35},cw=W-p.l-p.r,ch=H-p.t-p.b;
+  const allV=datasets.flatMap(d=>d.data);const mn=Math.min(...allV)*0.85,mx=Math.max(...allV)*1.1;
+  let h=`<line x1="${p.l}" y1="${H-p.b}" x2="${W-p.r}" y2="${H-p.b}" class="chart-axis"/>`;
+  for(let i=0;i<4;i++){const y=p.t+(ch/3)*i;h+=`<line x1="${p.l}" y1="${y}" x2="${W-p.r}" y2="${y}" class="chart-grid"/>`;h+=`<text x="${p.l-5}" y="${y+3}" text-anchor="end" class="chart-label">${(mx-(mx-mn)*(i/3)).toFixed(1)}</text>`;}
+  labels.forEach((l,i)=>{const x=p.l+(cw/(labels.length-1))*i;if(i%2===0)h+=`<text x="${x}" y="${H-p.b+14}" text-anchor="middle" class="chart-label">${l}</text>`;});
+  datasets.forEach(ds=>{const pts=ds.data.map((v,i)=>{const x=p.l+(cw/(labels.length-1))*i;const y=p.t+ch*(1-(v-mn)/(mx-mn));return`${x},${y}`;});h+=`<polyline points="${pts.join(' ')}" class="chart-line" stroke="${ds.color}"/>`;ds.data.forEach((v,i)=>{const x=p.l+(cw/(labels.length-1))*i;const y=p.t+ch*(1-(v-mn)/(mx-mn));h+=`<circle cx="${x}" cy="${y}" r="3" fill="${ds.color}" class="chart-dot"><title>${labels[i]}: ${v}</title></circle>`;});});
+  svg.innerHTML=h;
+}
+
+function drawBar(svgId,labels,values,color='#7c9dff'){
+  const svg=document.getElementById(svgId);if(!svg)return;
+  const W=360,H=160,p={t:15,r:15,b:30,l:35},cw=W-p.l-p.r,ch=H-p.t-p.b;const mx=Math.max(...values)*1.15;
+  let h=`<line x1="${p.l}" y1="${H-p.b}" x2="${W-p.r}" y2="${H-p.b}" class="chart-axis"/>`;
+  for(let i=0;i<4;i++){const y=p.t+(ch/3)*i;h+=`<line x1="${p.l}" y1="${y}" x2="${W-p.r}" y2="${y}" class="chart-grid"/>`;h+=`<text x="${p.l-5}" y="${y+3}" text-anchor="end" class="chart-label">${(mx-mx*(i/3)).toFixed(1)}</text>`;}
+  const bw=cw/labels.length*0.6,gap=cw/labels.length;
+  labels.forEach((l,i)=>{const x=p.l+gap*i+gap*0.2;const ht=ch*(values[i]/mx);const y=p.t+ch-ht;h+=`<rect x="${x}" y="${y}" width="${bw}" height="${ht}" rx="3" fill="${color}" class="bar"><title>${l}: ${values[i]}</title></rect>`;h+=`<text x="${x+bw/2}" y="${H-p.b+14}" text-anchor="middle" class="chart-label">${l}</text>`;});
+  svg.innerHTML=h;
+}
+
+function drawHBar(svgId,labels,values,barColors){
+  const svg=document.getElementById(svgId);if(!svg)return;
+  const W=360,H=120,p={t:5,r:15,b:5,l:65},cw=W-p.l-p.r,ch=H-p.t-p.b;const mx=Math.max(...values)*1.1;
+  const bh=ch/labels.length*0.65,gap=ch/labels.length;let h='';
+  labels.forEach((l,i)=>{const y=p.t+gap*i+gap*0.175;const w=cw*(values[i]/mx);h+=`<text x="${p.l-5}" y="${y+bh/2+3}" text-anchor="end" class="chart-label" style="font-size:10px;">${l}</text>`;h+=`<rect x="${p.l}" y="${y}" width="${w}" height="${bh}" rx="3" fill="${barColors[i]}" class="bar"/>`;h+=`<text x="${p.l+w+5}" y="${y+bh/2+3}" class="chart-label" style="font-size:10px;fill:#bbb;">${values[i]}%</text>`;});
+  svg.innerHTML=h;
+}
+
+function drawFunnel(cId,stages){
+  const c=document.getElementById(cId);if(!c)return;const mx=stages[0].value;const fc=['#7c9dff','#b07cff','#4dd9e8','#28c840'];
+  c.innerHTML=stages.map((s,i)=>`<div class="funnel-stage"><div class="funnel-label">${s.label}</div><div class="funnel-bar-bg"><div class="funnel-bar-fill" style="width:${(s.value/mx*100)}%;background:${fc[i%4]}"></div><div class="funnel-val">${s.display}</div></div></div>`).join('');
+}
+
+function drawGroupedBar(svgId,labels,groups){
+  const svg=document.getElementById(svgId);if(!svg)return;
+  const W=360,H=160,p={t:18,r:15,b:30,l:35},cw=W-p.l-p.r,ch=H-p.t-p.b;
+  const allV=groups.flatMap(g=>g.data);const mx=Math.max(...allV)*1.15;
+  let h=`<line x1="${p.l}" y1="${H-p.b}" x2="${W-p.r}" y2="${H-p.b}" class="chart-axis"/>`;
+  for(let i=0;i<4;i++){const y=p.t+(ch/3)*i;h+=`<line x1="${p.l}" y1="${y}" x2="${W-p.r}" y2="${y}" class="chart-grid"/>`;}
+  const gw=cw/labels.length,bw=gw*0.7/groups.length;
+  labels.forEach((l,li)=>{const gx=p.l+gw*li+gw*0.15;groups.forEach((g,gi)=>{const x=gx+bw*gi;const ht=ch*(g.data[li]/mx);const y=p.t+ch-ht;h+=`<rect x="${x}" y="${y}" width="${bw-1}" height="${ht}" rx="2" fill="${g.color}" class="bar"/>`;});if(li%3===0)h+=`<text x="${gx+bw*groups.length/2}" y="${H-p.b+14}" text-anchor="middle" class="chart-label">${l}</text>`;});
+  groups.forEach((g,i)=>{const lx=p.l+i*80;h+=`<rect x="${lx}" y="2" width="8" height="8" rx="2" fill="${g.color}"/>`;h+=`<text x="${lx+12}" y="10" class="chart-label" style="font-size:8px;fill:#aaa;">${g.label}</text>`;});
+  svg.innerHTML=h;
+}
+
+function renderAllCharts(){
+  const d=getFiltered();
+  drawLine('chart-cvr-line',months,[{data:d.cvr,color:C.blue}]);
+  drawBar('chart-cvr-bar',products,cvrByProduct,C.blue);
+  drawLine('chart-engagement-line',months,[{data:d.views,color:C.blue},{data:d.clicks,color:C.green},{data:d.likes,color:C.purple}]);
+  drawFunnel('funnel-overview',[{label:'Views',value:d.totalViews,display:d.totalViews+'K'},{label:'Clicks',value:d.totalClicks,display:d.totalClicks+'K'},{label:'Likes',value:d.totalLikes,display:d.totalLikes+'K'}]);
+  drawLine('chart-cvr-detail',months,[{data:d.cvr,color:C.blue}]);
+  drawBar('chart-cvr-product',products,cvrByProduct,C.purple);
+  drawFunnel('funnel-detail',[{label:'Homepage',value:100,display:'100K'},{label:'Product View',value:62,display:'62K'},{label:'Add to Cart',value:18,display:'18K'},{label:'Purchase',value:4.8,display:'4.8K'}]);
+  drawLine('chart-social-line',months,[{data:d.views,color:C.blue},{data:d.clicks,color:C.green},{data:d.likes,color:C.purple}]);
+  const cv=d.views.map(v=>Math.round(v*0.35));
+  drawGroupedBar('chart-content-type',months,[{label:'Blog',data:d.views.map(v=>Math.round(v*0.3)),color:C.blue},{label:'Social',data:cv,color:C.purple},{label:'Video',data:d.views.map(v=>Math.round(v*0.2)),color:C.cyan}]);
+  drawBar('chart-rating-dist',['1\u2605','2\u2605','3\u2605','4\u2605','5\u2605'],[8,12,22,35,23],C.amber);
+  drawHBar('chart-sentiment-bar',['Positive','Neutral','Negative'],[47,28,25],[C.green,C.amber,C.red]);
+}
+
+renderAllCharts();
+</script>
+</body>
+</html>
